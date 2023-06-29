@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Message</title>
+  <link rel="stylesheet" type="text/css" href="message-styles.css">
+  <style>
+    .resizable-image {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+    }
+    .message-content {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center; /* Adjust alignment as needed */
+      align-items: flex-start;
+    }
+    .message-content img {
+      margin: 5px;
+    }
+  </style>
+</head>
+<body class="message-body">
+  <div class="message-container">
+    <h1>Message Received</h1>
+    <div class="message-content" id="messageContent"></div>
+  </div>
+
+  <script>
+    window.addEventListener("DOMContentLoaded", function() {
+      var messageText = document.querySelector("#messageContent");
+      var messageContent = localStorage.getItem("messageContent");
+      messageText.innerHTML = messageContent;
+      var images = messageText.getElementsByTagName("img");
+      for (var i = 0; i < images.length; i++) {
+        var image = images[i];
+        if (image.hasAttribute("data-original-width") && image.hasAttribute("data-original-height")) {
+          var originalWidth = parseInt(image.getAttribute("data-original-width"));
+          var originalHeight = parseInt(image.getAttribute("data-original-height"));
+          var aspectRatio = originalWidth / originalHeight;
+          var containerWidth = image.clientWidth;
+          var containerHeight = containerWidth / aspectRatio;
+          image.style.width = containerWidth + "px";
+          image.style.height = containerHeight + "px";
+        }
+        image.classList.add("resizable-image");
+      }
+    });
+  </script>
+</body>
+</html>
